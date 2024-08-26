@@ -65,7 +65,7 @@ Werkzeug==3.0.3
 wsproto==1.2.0
 google-generativeai==0.2.0
 zope.interface==6.4.post2
-langchain-huggingface==0.0.13
+langchain-huggingface==0.0.3
 langchain==0.0.305
 langchain-qdrant==0.0.17
 langchain-core==0.2.35
