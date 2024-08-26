@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template,redirect,url_for, flash
+from flask import Flask, request, jsonify, render_template, redirect, url_for, flash, session
 import requests
 import os
 import google.generativeai as genai
@@ -13,17 +13,17 @@ import torch
 from torch import nn
 from torchvision import transforms
 from PIL import Image
-from model1 import CNN_NeuralNet 
-from googletrans import Translator
+from model1 import CNN_NeuralNet
 import markdown
 
 app = Flask(__name__, static_url_path='/static')
+app.secret_key = 'your_secret_key'  # Ensure this is a secure secret key
+app.config['SESSION_TYPE'] = 'filesystem'
 
-#----------------------------------------------------------------------------------------------------------
 # In-memory storage for users and cities
 users = []
 city = []
-#--------------------------------------------------------------------------------------
+
 # Home route
 @app.route('/')
 def index():
@@ -37,12 +37,11 @@ def register():
             user = request.json
         else:
             user = request.form.to_dict()
-
+        session['language'] = user.get('language', 'en')
         users.append(user)
         return jsonify({"message": "User registered successfully"}), 201
     return render_template('registration.html')
 
-#----------------------------------------------------------------------------------
 # User login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -54,13 +53,32 @@ def login():
         user = next((user for user in users if user['mobile'] == mobile and user['password'] == password), None)
 
         if user:
+            session['language'] = user.get('language', 'en')
             return jsonify({"message": "Login successful!"}), 200
         else:
             return jsonify({"message": "Invalid mobile number or password"}), 401
     return render_template('login.html')
-#-------------------------------------------------------------------------------------------
+
+# Route to set language
+@app.route('/set_language/<lang>', methods=['GET'])
+def set_language(lang):
+    session['language'] = lang
+    flash('Language updated successfully!')
+    return redirect(url_for('welcome'))
+
+# Language logic
+def get_language_suffix():
+    language = session.get('language', 'en')
+    if language == 'en':
+        return ''
+    elif language == 'mr':
+        return '1'
+    elif language == 'hi':
+        return '2'
+    return ''
+
 # Welcome page
-messageList=[]
+messageList = []
 @app.route('/welcome', methods=['GET', 'POST'])
 def welcome():
     if request.method == 'POST':
@@ -79,34 +97,11 @@ def welcome():
         # Flash a success message
         flash('Form submitted successfully!')
         
-        return render_template('welcome.html')
+        return render_template(f'welcome{get_language_suffix()}.html')
     
     user = users[-1] if users else {'name': ''}
-    return render_template('welcome.html', name=user['name'])
-@app.route('/marathi', methods=['GET', 'POST'])
-def marathi():
-    if request.method == 'POST':
-        # Get form data
-        name = request.form.get('name')
-        email = request.form.get('email')
-        message = request.form.get('message')
-        
-        data = {
-            'name': name,
-            'email': email,
-            'message': message
-        }
-        messageList.append(data)
-        # Save form data (example: you can save it to a database)
-        print(f'Name: {name}, Email: {email}, Message: {message}')
-        
-        # Flash a success message
-        flash('Form submitted successfully!')
-        return render_template('welcome1.html')
-    
-    user = users[-1] if users else {'name': ''}
-    return render_template('welcome1.html', name=user['name'])
-#-----------------------------------------------------------------------------------------------------
+    return render_template(f'welcome{get_language_suffix()}.html', name=user['name'])
+
 # Weather page
 @app.route('/weather', methods=['GET', 'POST'])
 def weather():
@@ -118,8 +113,7 @@ def weather():
             return jsonify(weather_data)
         else:
             return jsonify({'error': 'Could not retrieve weather data.'}), 400
-    return render_template('weather.html')
-
+    return render_template(f'weather{get_language_suffix()}.html')
 
 # Function to get weather data
 def get_weather_data(location):
@@ -167,6 +161,7 @@ def get_weather_data(location):
             return {'weather': weather, 'forecast': []}
     else:
         return None
+
 # Function to get weather data by coordinates
 @app.route('/current-weather', methods=['POST'])
 def current_weather():
@@ -175,9 +170,10 @@ def current_weather():
     lon = data.get('longitude')
     weather_data = get_weather_by_coordinates(lat, lon)
     if weather_data:
-            return jsonify(weather_data)
+        return jsonify(weather_data)
     else:
-            return jsonify({'error': 'Could not retrieve weather data.'}), 400
+        return jsonify({'error': 'Could not retrieve weather data.'}), 400
+
 def get_weather_by_coordinates(lat, lon):
     api_key = '0931fd55055aa0f7904e511e33994db2'
     url = f"http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={api_key}&units=metric"
@@ -219,7 +215,7 @@ def get_weather_by_coordinates(lat, lon):
             return {'weather': weather, 'forecast': []}
     else:
         return None
-#---------------------------------------------------------------------------------------------------------------
+
 # Chatbot page
 @app.route('/chatbot', methods=['GET', 'POST'])
 def chatbot_page():
@@ -229,45 +225,40 @@ def chatbot_page():
         bot_reply = get_bot_response(user_message)
         formatted_reply = markdown.markdown(bot_reply)  # Convert markdown to HTML
         return jsonify(reply=formatted_reply)
-    return render_template('chatbot.html')
+    return render_template(f'chatbot{get_language_suffix()}.html')
 
 def get_bot_response(user_message):
-
-    translator = Translator ()
-
+    language = session.get('language', 'en')
+    translator = Translator()
 
     detected = translator.detect(user_message)
     detected_language = detected.lang
 
     llm1 = ChatGoogleGenerativeAI(
-    model="gemini-1.5-pro",
-    temperature=0.5,
-    max_tokens=None,
-    timeout=None, 
-    google_api_key = 'AIzaSyCQbNkygleMD3b6QI1QFq8-Zr9gpMBAfP4'
-)
+        model="gemini-1.5-pro",
+        temperature=0.5,
+        max_tokens=None,
+        timeout=None, 
+        google_api_key='AIzaSyCQbNkygleMD3b6QI1QFq8-Zr9gpMBAfP4'
+    )
 
     try:
         if detected_language == 'en':
-
             model_out_en = conversational_rag_chain.invoke({"input": user_message}, config={"configurable": {"session_id": "abc123"}})
             bot_reply = model_out_en['answer']
+            bot_reply = translator.translate(bot_reply, dest=language).text
+
         else:
-
-            model_en = translator.translate(user_message , dest = 'en').text
-
+            model_en = translator.translate(user_message, dest='en').text
             model_out_en = conversational_rag_chain.invoke({"input": model_en}, config={"configurable": {"session_id": "abc123"}})
-            op = model_out_en['answer']
+            bot_reply = model_out_en['answer']
+            bot_reply = translator.translate(bot_reply, dest=language).text
 
-
-            model_out_det = translator.translate(op, dest=detected_language)
-            bot_reply = model_out_det.text
     except Exception as e:
-        bot_reply = f"An error occurred: {e}"
-
+        bot_reply = str(e)
+    
     return bot_reply
-#--------------------------------------------------------------------------------------------------------------------
-# Commodity page
+
 @app.route('/commodity')
 def commodity_page():
     return render_template('commodity.html')
@@ -297,10 +288,10 @@ def map_page():
         if location.lower() == 'aurangabad':
             location = 'ch. Sambhaji Nagar'
         lat, lng = get_coordinates(location)
-        return render_template('map.html', lat=lat, lng=lng)
+        return render_template(f'map{get_language_suffix()}.html', lat=lat, lng=lng)
     else:
         lat, lng = get_coordinates('India')
-        return render_template('map.html', lat=lat, lng=lng)
+        return render_template(f'map{get_language_suffix()}.html', lat=lat, lng=lng)
 
 # Function to get coordinates from location
 def get_coordinates(location):
@@ -349,17 +340,20 @@ def crop_prediction():
                 prediction = model.predict(data)
                 final_prediction = crop_list[prediction[0]]
                 print(final_prediction)
-                return render_template('crop.html', prediction=final_prediction)
+                language = session.get('language', 'en')
+                translator = Translator()
+                final_prediction= translator.translate(final_prediction, dest=language).text
+                return render_template(f'crop{get_language_suffix()}.html', prediction=final_prediction)
             else:
                 error = "Weather data not available for the specified city."
-                return render_template('crop.html', error=error)
+                return render_template(f'crop{get_language_suffix()}.html', error=error)
 
         except ValueError:
           #  error = "Invalid input. Please enter numeric values for N, P, K, pH, and rainfall."
-            return render_template('crop.html')
+            return render_template(f'crop{get_language_suffix()}.html')
         
       # Clear session on initial load or refresh
-    return render_template('crop.html')
+    return render_template(f'crop{get_language_suffix()}.html')
 
 
 # Function to fetch weather data for crop prediction
@@ -392,12 +386,12 @@ def show_pdfs():
         'Kerala': 'kerala.pdf',
         'Tamil Nadu': 'tamilnadu.pdf'
     }
-    return render_template('pdf.html', pdf_files=pdf_files)
+    return render_template(f'pdf{get_language_suffix()}.html', pdf_files=pdf_files)
 
 @app.route('/view-pdf', methods=['GET'])
 def view_pdf():
     pdf_file = request.args.get('pdf')
-    return render_template('view_pdf.html', pdf_file=pdf_file) 
+    return render_template(f'view_pdf.html{get_language_suffix()}', pdf_file=pdf_file) 
     
 #------------------------------------------------------------------------------------------------------------------------------
 translator = Translator()
@@ -543,12 +537,15 @@ def upload_image():
                 timeout=None,
                 google_api_key='AIzaSyCQbNkygleMD3b6QI1QFq8-Zr9gpMBAfP4'
             )
+            language = session.get('language', 'en')
+            translator = Translator()
             llm_out = llm.invoke(pr)
             formatted_output = markdown.markdown(llm_out.content)
-            return render_template('upload.html', filename=filename, prediction=formatted_output)
+            formatted_output= translator.translate(formatted_output, dest=language).text
+            return render_template(f'upload{get_language_suffix()}.html', filename=filename, prediction=formatted_output)
         else:
             return redirect(request.url)
-    return render_template('upload.html')
+    return render_template(f'upload{get_language_suffix()}.html')
           
     
 #---------------------------------------------------------------------------------------------------------------------------------------------
