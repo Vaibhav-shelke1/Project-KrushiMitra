@@ -1,0 +1,124 @@
+body, h1, h2, h3, p, ul, li, a, nav, section {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Navbar */
+  .navbar {
+    background-color: #343a40;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+  }
+  .navbar-brand {
+    font-size: 1.5rem;
+    color: white;
+    text-decoration: none;
+  }
+  .navbar-toggler {
+    display: none;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: white;
+  }
+  .navbar-menu {
+    display: flex;
+  }
+  .navbar-menu.active {
+    display: block;
+  }
+  .navbar-nav {
+    display: flex;
+    list-style: none;
+  }
+  .nav-item {
+    margin-left: 1rem;
+  }
+  .nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+  }
+  
+  /* Welcome Section */
+  .welcome-section {
+    background: url('welcome-background.jpg') no-repeat center center/cover;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+  }
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .content {
+    z-index: 1;
+  }
+  .btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 0.25rem;
+    margin-top: 1rem;
+  }
+  
+  /* Features Section */
+  .features-section {
+    padding: 2rem 1rem;
+  }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  .feature-card {
+    flex: 1 1 30%;
+    margin: 1rem;
+  }
+  .card {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    text-align: center;
+  }
+  .card-body {
+    padding: 1rem;
+  }
+  .card-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+  .card-text {
+    margin-bottom: 1rem;
+  }
+  
+  /* Footer */
+  .footer {
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+  }
+  .footer a {
+    color: white;
+    text-decoration: none;
+    margin: 0 0.5rem;
+  }

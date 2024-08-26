@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>कृषीमित्र वेबसाइट</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='welcome.css') }}">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+    <a class="navbar-brand" href="#"><img src="{{ url_for('static', filename='logo3.png') }}" alt="लोगो" class="logo"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="नेव्हिगेशन टॉगल करा">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item"><a class="nav-link" href="/welcome">मुख्यपृष्ठ</a></li>
+        <li class="nav-item"><a class="nav-link" href="/weather">हवा माहिती</a></li>
+        <li class="nav-item"><a class="nav-link" href="/chatbot">चॅटबॉट सहाय्य</a></li>
+        <li class="nav-item"><a class="nav-link" href="/commodity">सामग्री किंमती</a></li>
+        <li class="nav-item"><a class="nav-link" href="/crop-predict">पिकांची शिफारस</a></li>
+        <li class="nav-item"><a class="nav-link" href="/predict">रोग ओळख</a></li>
+        <li class="nav-item"><a class="nav-link" href="/pdf">योजना</a></li>
+        <li class="nav-item"><a class="nav-link" href="#about-us-section">आमच्याबद्दल</a></li>
+        <li class="nav-item"><a class="nav-link" href="#helpline-section">सहाय्यलाईन</a></li>
+        <li class="nav-item"><a class="nav-link" href="/login">लॉगआउट</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Welcome Section -->
+  <section class="welcome-section">
+    <div class="overlay"></div>
+    <div class="content">
+      <h1>कृषीमित्रमध्ये आपले स्वागत आहे</h1>
+      <p>भारतीय शेतकऱ्यांना सशक्त बनवणे: बीजापासून बाजारपेठेपर्यंत, आम्ही तुम्हाला पूर्णपणे समर्थित करतो.</p>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section container">
+    <div class="row pt-9">
+      <div class="col-md-4 feature-card">
+        <div class="card h-100 weather">
+          <div class="card-body" onclick="location.href='/weather'">
+            <h5 class="card-title">हवा माहिती</h5>
+            <p class="card-text">तुमच्या कृषी क्रियाकलापांची योग्य योजना करण्यासाठी ताज्या हवामान माहितीचे अनुसरण करा.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 feature-card">
+        <div class="card h-100 chatbot">
+          <div class="card-body" onclick="location.href='/chatbot'">
+            <h5 class="card-title">चॅटबॉट सहाय्य</h5>
+            <p class="card-text">आमच्या एआय-संचालित चॅटबॉटसह तुमच्या कृषी संबंधित प्रश्नांची त्वरित उत्तरे मिळवा.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 feature-card">
+        <div class="card h-100 commodity">
+          <div class="card-body" onclick="location.href='/commodity'">
+            <h5 class="card-title">सामग्री किंमती</h5>
+            <p class="card-text">विभिन्न कृषी वस्तूंच्या बाजारातील ताज्या किंमती प्रवेश करा.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 feature-card">
+        <div class="card h-100 crop">
+          <div class="card-body" onclick="location.href='/crop-predict'">
+            <h5 class="card-title">पिकांची शिफारस</h5>
+            <p class="card-text">तुमच्या स्थान आणि मातीच्या प्रकारावर आधारित सर्वोत्तम पिकांची शिफारस मिळवा.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 feature-card">
+        <div class="card h-100 disease">
+          <div class="card-body" onclick="location.href='/predict'">
+            <h5 class="card-title">रोग ओळख</h5>
+            <p class="card-text">पिकांच्या रोगांचा पूर्वीच ओळखा आणि तुमच्या पिकांचे संरक्षण करण्यासाठी प्रतिबंधात्मक उपाय घ्या.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 feature-card">
+        <div class="card h-100 blank">
+          <div class="card-body" onclick="location.href='/pdfs'">
+            <h5 class="card-title">शेतकरी योजना</h5>
+            <p class="card-text">शेतकऱ्यांसाठी उपलब्ध असलेल्या विविध सरकारी योजना आणि सवलतींचा शोध घ्या.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Helpline Section -->
+  <section id="helpline-section" class="container my-5">
+    <h2 class="text-center mb-5 custom-help">शेतकरी सहाय्यलाईन</h2>
+    <div class="row custom-help2">
+      <div class="col-md-6 ">
+        <p>तुम्हाला काही प्रश्न असतील किंवा सहाय्याची आवश्यकता असेल तर कृपया आमच्या शेतकरी सहाय्यलाईनसह संपर्क साधा:</p>
+        <ul class="list-unstyled">
+          <li><strong>फोन:</strong> 1800-123-456</li>
+          <li><strong>ईमेल:</strong> support@krushimitra.com</li>
+        </ul>
+      </div>
+      <div class="col-md-6">
+        <p>तुम्ही आमच्या ऑनलाइन फॉर्मद्वारे देखील संपर्क साधू शकता:</p>
+        <form id="helplineForm" method="post" action="{{ url_for('welcome') }}">
+          <div class="form-group">
+            <label for="helplineName">नाव</label>
+            <input type="text" class="form-control" id="helplineName" name="name" placeholder="तुमचे नाव प्रविष्ट करा" required>
+          </div>
+          <div class="form-group">
+            <label for="helplineEmail">ईमेल</label>
+            <input type="email" class="form-control" id="helplineEmail" name="email" placeholder="तुमचा ईमेल प्रविष्ट करा" required>
+          </div>
+          <div class="form-group">
+            <label for="helplineMessage">संदेश</label>
+            <textarea class="form-control" id="helplineMessage" name="message" rows="4" placeholder="तुमचा संदेश किंवा प्रश्न प्रविष्ट करा" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">सबमिट करा</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Us Section -->
+  <section id="about-us-section" class="about-us-section container">
+    <h2 class="text-center my-5">आमच्याबद्दल</h2>
+    <div class="row custom-about" id="aboutUsCards">
+      <!-- Dynamic About Us Cards will be injected here -->
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white text-center p-3">
+    <p>&copy; 2024 कृषीमित्र. सर्व हक्क राखीव.</p>
+    <a href="#" class="text-white">गोपनीयता धोरण</a> |
+    <a href="#" class="text-white">वापराच्या अटी</a> |
+    <a href="#" class="text-white">संपर्क साधा</a>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const aboutUsData = [
+        {
+          title: "आमचा ध्येय",
+          text: "शेतकऱ्यांना त्यांची उत्पादकता वाढवण्यासाठी ताज्या माहिती आणि साधनांसह सशक्त बनवणे."
+        },
+        {
+          title: "आमची दृष्टिकोन",
+          text: "आधुनिक कृषी प्रथांचा आणि माहिती प्रसारणाचा प्रमुख प्लॅटफॉर्म होणे."
+        },
+        {
+          title: "आमची टीम",
+          text: "कृषी क्षेत्र सुधारण्यासाठी समर्पित व्यावसायिकांची एक टीम."
+        }
+      ];
+
+      const aboutUsCardsContainer = document.getElementById("aboutUsCards");
+
+      aboutUsData.forEach(data => {
+        const colDiv = document.createElement("div");
+        colDiv.classList.add("col-md-4", "feature-card");
+
+        const cardDiv = document.createElement("div");
+        cardDiv.classList.add("card", "h-100");
+
+        const cardBodyDiv = document.createElement("div");
+        cardBodyDiv.classList.add("card-body","custom-card-about");
+
+        const cardTitle = document.createElement("h5");
+        cardTitle.classList.add("card-title");
+        cardTitle.textContent = data.title;
+
+        const cardText = document.createElement("p");
+        cardText.classList.add("card-text");
+        cardText.textContent = data.text;
+
+        cardBodyDiv.appendChild(cardTitle);
+        cardBodyDiv.appendChild(cardText);
+        cardDiv.appendChild(cardBodyDiv);
+        colDiv.appendChild(cardDiv);
+        aboutUsCardsContainer.appendChild(colDiv);
+      });
+
+      // Change background images in the welcome section
+      const images = [
+        "{{ url_for('static', filename='farm_background.jpg') }}",
+        "{{ url_for('static', filename='farm_background_1.jpg') }}",
+        "{{ url_for('static', filename='crop_background.jpg') }}"
+      ];
+      let currentImageIndex = 0;
+      const welcomeSection = document.querySelector('.welcome-section');
+
+      setInterval(() => {
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        welcomeSection.style.backgroundImage = `url('${images[currentImageIndex]}')`;
+      }, 5000); // Change image every 5 seconds
+    });
+  </script>
+</body>
+</html>

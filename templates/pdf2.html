@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>राज्य चुनें</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='pdf.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    {% include "base2.html" %}
+<div>
+    <h1>किसान योजनाओं के लिए राज्य चुनें</h1>
+    <form action="/view-pdf" method="get">
+        <select name="pdf">
+            {% for state, pdf in pdf_files.items() %}
+                <option value="{{ pdf }}">{{ state }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">PDF देखें</button>
+    </form>
+</div>
+    {% include "footer1.html" %}
+</body>
+</html>

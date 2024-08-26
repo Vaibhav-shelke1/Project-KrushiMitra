@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>चॅटबॉट</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='chatbot.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    {% include "base1.html" %}
+    
+    <div class="container">
+        <h1>चॅटबॉट</h1>
+        <div class="chatbot-container">
+            <div id="chat-output" class="chat-output">
+                <!-- चॅट संदेश येथे दिसतील -->
+            </div>
+            <input type="text" id="chat-input" placeholder="तुमचा संदेश येथे टाका...">
+            <button type="submit" id="send-button" onclick="sendMessage()">पाठवा</button>
+        </div>
+    </div>
+    {% include "footer1.html" %}
+
+    <script>
+        document.getElementById('chat-input').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+
+        async function sendMessage() {
+            const input = document.getElementById('chat-input').value;
+            if (input.trim() === '') return;
+
+            const output = document.getElementById('chat-output');
+            const userMessage = document.createElement('div');
+            userMessage.className = 'chat-message user';
+            userMessage.textContent = input;
+            output.appendChild(userMessage);
+
+            document.getElementById('chat-input').value = '';
+            output.scrollTop = output.scrollHeight;
+
+            try {
+                const response = await fetch('/chatbot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: input })
+                });
+                const data = await response.json();
+                const botMessage = document.createElement('div');
+                botMessage.className = 'chat-message bot';
+                botMessage.innerHTML = data.reply;  // HTML सामग्री दर्शवण्यासाठी innerHTML वापरा
+                output.appendChild(botMessage);
+                output.scrollTop = output.scrollHeight;
+            } catch (error) {
+                console.error('चुक:', error);
+            }
+        }
+    </script>
+</body>
+</html>

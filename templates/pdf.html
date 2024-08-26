@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select State</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='pdf.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+</head>
+<body>
+    {% include "base.html" %}
+    <div>
+    <h1>Select a State to View Farmer Schemes</h1>
+    <form action="/view-pdf" method="get">
+        <select name="pdf">
+            {% for state, pdf in pdf_files.items() %}
+                <option value="{{ pdf }}">{{ state }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">View PDF</button>
+    </form>
+</div>
+    {% include "footer.html" %}
+</body>
+</html>

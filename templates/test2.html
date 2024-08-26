@@ -1,0 +1,111 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farmer Website</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='test2.css') }}">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a class="navbar-brand" href="#">KrushiMitra</a>
+    <button class="navbar-toggler">☰</button>
+    <div class="navbar-menu">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Weather</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Chatbot</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Commodity Prices</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Crop Recommendation</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Diseases Detection</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Schemes</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Welcome Section -->
+  <section class="welcome-section">
+    <div class="overlay"></div>
+    <div class="content">
+      <h1>Welcome to KrushiMitra</h1>
+      <p>Your trusted partner in modern agriculture</p>
+      <a href="" class="btn">Get Started</a>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="row">
+      <div class="feature-card">
+        <div class="card weather">
+          <div class="card-body">
+            <h5 class="card-title">Weather Updates</h5>
+            <p class="card-text">Stay updated with the latest weather information to plan your farming activities efficiently.</p>
+            <a href="#" class="btn">Learn More</a>
+          </div>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="card chatbot">
+          <div class="card-body">
+            <h5 class="card-title">Chatbot Assistance</h5>
+            <p class="card-text">Get instant answers to your farming queries with our AI-powered chatbot.</p>
+            <a href="#" class="btn">Learn More</a>
+          </div>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="card commodity">
+          <div class="card-body">
+            <h5 class="card-title">Commodity Prices</h5>
+            <p class="card-text">Access the latest market prices for various agricultural commodities.</p>
+            <a href="#" class="btn">Learn More</a>
+          </div>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="card crop">
+          <div class="card-body">
+            <h5 class="card-title">Crop Recommendation</h5>
+            <p class="card-text">Get recommendations on the best crops to grow based on your location and soil type.</p>
+            <a href="#" class="btn">Learn More</a>
+          </div>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="card disease">
+          <div class="card-body">
+            <h5 class="card-title">Diseases Detection</h5>
+            <p class="card-text">Identify crop diseases early and take preventive measures to save your crops.</p>
+            <a href="#" class="btn">Learn More</a>
+          </div>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="card schemes">
+          <div class="card-body">
+            <h5 class="card-title">Farmer Schemes</h5>
+            <p class="card-text">Explore various government schemes and subsidies available for farmers.</p>
+            <a href="#" class="btn">Learn More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2024 Farmer's Friend. All rights reserved.</p>
+    <a href="#">Privacy Policy</a> |
+    <a href="#">Terms of Use</a> |
+    <a href="#">Contact Us</a>
+  </footer>
+
+  <script>
+    document.querySelector('.navbar-toggler').addEventListener('click', () => {
+      document.querySelector('.navbar-menu').classList.toggle('active');
+    });
+  </script>
+</body>
+</html>

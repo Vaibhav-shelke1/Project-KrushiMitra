@@ -1,0 +1,39 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .navbar {
+    width: 100%;
+  }
+  .logo-container {
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    background-color: #343a40; /* Matches the navbar background */
+}
+
+.logo {
+    margin: 0;
+    padding: 0;
+    max-height: 40px;
+   
+    background-color: transparent; /* Ensures the logo background is transparent */
+}
+  
+.navbar-light .navbar-nav .nav-link {
+    color: #fff;
+    transition: color 0.3s;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+    color: #ab1616;
+}
+footer{
+    width: 100%;
+}
+  

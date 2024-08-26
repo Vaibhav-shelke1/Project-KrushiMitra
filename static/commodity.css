@@ -1,0 +1,172 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e8f5e9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+   align-items: center;
+   justify-content: space-between;
+   min-height: 100vh;
+    background-image: url("crop_background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+.logo-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.logo {
+    max-height: 50px;
+    border-radius: 20%;
+}
+
+.logout-button {
+    background-color: #7ace7d;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.logout-button:hover {
+    background-color: #ffffff;
+    color: #dc3545;
+}
+
+.container {
+    background-color: rgba(208, 205, 123, 0.1); /* Semi-transparent to show background */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-bottom: 50px;
+    /* Adjusted for centering and margin */
+}
+
+.inputs {
+    display: flex;
+    flex-direction: row;
+}
+
+h2 {
+    text-align: center;
+    color: #00796b;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+}
+
+.form-row label {
+    flex: 1;
+    margin-right: 5px;
+}
+
+.form-row select {
+    flex: 2;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+.button {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-row button {
+    background-color:#28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.form-row button:hover {
+    background-color: white;
+    color: #000;
+}
+
+.form-row input[type="submit"] {
+    background-color: #28a745;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form-row input[type="submit"]:hover {
+    background-color: #d5ded7;
+    color: #000;
+}
+.table-container {
+    max-height: 400px; /* Adjust the height as needed */
+    overflow: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color:  #FAF3D1;
+}
+
+th, td {
+    border: 1px solid #dee2e6;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color:#e8c411;
+    color: #ffffff;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #e9ecef;
+}
+
+/* Add this to your commodity.css file */
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #000;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: spin 1s linear infinite;
+    display: none; /* Initially hidden */
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.hide-text {
+    color: transparent; /* Hide the text */
+}

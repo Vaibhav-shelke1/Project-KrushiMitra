@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <title>रोग की भविष्यवाणी</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='disease.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    {% include "base2.html" %}
+    <div class="container">
+        <h1>रोग का पता लगाने के लिए छवि अपलोड करें</h1>
+        <div class="form-wrapper">
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <p class="crop-support">वर्तमान में समर्थित:</p>
+                    <ul>
+                        <li>सेब</li>
+                        <li>ब्लूबेरी</li>
+                        <li>चेरी (खट्टा सहित)</li>
+                        <li>मक्का</li>
+                        <li>अंगूर</li>
+                        <li>संतरा</li>
+                        <li>आड़ू</li>
+                        <li>मिर्च</li>
+                        <li>आलू</li>
+                        <li>रास्पबेरी</li>
+                        <li>सोयाबीन</li>
+                        <li>स्क्वैश</li>
+                        <li>स्ट्रॉबेरी</li>
+                        <li>टमाटर</li>
+                    </ul>
+                    <label for="file">एक छवि फ़ाइल चुनें:</label>
+                    <input type="file" id="file" name="file">
+                </div>
+                <button type="submit" class="btn">पता लगाएं</button>
+            </form>
+        </div>
+        {% if filename %}
+        <div class="card">
+            <img src="{{ url_for('static', filename='uploads/' + filename) }}" alt="अपलोड की गई छवि">
+            <h5 class="card-title">अपलोड की गई छवि: {{ filename }}</h5>
+            <p class="card-text">{{ prediction | safe }}</p>
+        </div>
+        {% endif %}
+    </div>
+    {% include "footer2.html" %}
+</body>
+</html>

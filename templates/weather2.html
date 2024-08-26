@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>मौसम</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='weather.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    {% include "base2.html" %}
+    <div class="card">
+        <div class="search">
+            <form id="weather-form">
+                <input type="text" id="location" name="location" placeholder="शहर का नाम या ज़िप कोड दर्ज करें" spellcheck="false" required>
+                <button type="submit" class="button-search"><img src="{{ url_for('static', filename='search.png') }}"></button>
+                <button type="button" class="live-location-btn" onclick="getLiveLocation()"><img src="{{ url_for('static', filename='location-indicator.svg') }}"></button>
+            </form>
+        </div>
+
+        <div class="error" id="error" style="display: none;">
+            <p>अमान्य शहर का नाम या ज़िप कोड।</p>
+        </div>
+
+        <div class="weather" id="weather" style="display: none;">
+            <img src="{{ url_for('static', filename='weather-icons/default.png') }}" class="weather-icon" id="weather-icon">
+            <h1 class="temp" id="temp"></h1>
+            <h2 class="city" id="city"></h2>
+            <div class="details">
+                <div class="col">
+                    <img src="{{ url_for('static', filename='humidity.png') }}">
+                    <div>
+                        <p class="humidity" id="humidity"></p>
+                        <p>नमी</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <img src="{{ url_for('static', filename='wind.png') }}">
+                    <div>
+                        <p class="wind" id="wind"></p>
+                        <p>हवा की गति</p>
+                    </div>
+                </div>
+            </div>
+            <button class="map"onclick="location.href='/map'">मानचित्र</button>
+        </div>
+
+    </div>
+    <div id="forecast" class="forecast" style="display: none;">
+        <h2>5-दिवसीय पूर्वानुमान</h2>
+        <div id="forecast-days" class="forecast-days"></div>
+    </div>
+    {% include "footer2.html" %}
+    <script>
+        document.getElementById('weather-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const location = document.getElementById('location').value.trim();
+            if (location) {
+                fetch('/weather', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ location: location }),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(data => { throw new Error(data.error); });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showWeather(data.weather);
+                    showForecast(data.forecast);
+                })
+                .catch(error => {
+                    showError(error.message);
+                });
+            } else {
+                showError('कृपया मान्य शहर का नाम या ज़िप कोड दर्ज करें।');
+            }
+        });
+
+        function getLiveLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const coords = {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude
+                    };
+
+                    fetch('/current-weather', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(coords),
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(data => { throw new Error(data.error); });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        showWeather(data.weather);
+                        showForecast(data.forecast);
+                    })
+                    .catch(error => {
+                        showError(error.message);
+                    });
+                });
+            } else {
+                showError('यह ब्राउज़र जियोलोकेशन का समर्थन नहीं करता है।');
+            }
+        }
+
+        function showWeather(weather) {
+            if (weather) {
+                document.getElementById('temp').textContent = `${weather.temperature}°C`;
+                document.getElementById('city').textContent = weather.location;
+                document.getElementById('humidity').textContent = `${weather.humidity}%`;
+                document.getElementById('wind').textContent = `${weather.wind_speed} किमी/घंटा`;
+                document.getElementById('weather-icon').src = `http://openweathermap.org/img/wn/${weather.icon}@2x.png`;
+                document.getElementById('weather').style.display = 'block';
+                document.getElementById('error').style.display = 'none';
+            }
+        }
+
+        function showForecast(forecast) {
+            const forecastElement = document.getElementById('forecast-days');
+            forecastElement.innerHTML = ''; // Clear previous forecast
+            if (forecast && forecast.length > 0) {
+                const forecastMap = {
+                    '10d': '{{ url_for('static', filename='rain.png') }}',
+                    '10n': '{{ url_for('static', filename='rain.png') }}',
+                    '04d': '{{ url_for('static', filename='clouds.png') }}',
+                    '04n': '{{ url_for('static', filename='clouds.png') }}'
+                };
+
+                let daysCount = 0;
+                let lastDate = '';
+                forecast.forEach(day => {
+                    const currentDate = new Date(day.date).toLocaleDateString();
+                    if (currentDate !== lastDate && daysCount < 5) {
+                         let image=`http://openweathermap.org/img/wn/${day.icon}@2x.png`
+                        const forecastItem = document.createElement('div');
+                        forecastItem.classList.add('forecast-item');
+                        forecastItem.innerHTML = `
+                            <div class="forecast-date">${currentDate}</div>
+                            <img src="${image|| '{{ url_for('static', filename='default.png') }}'}" class="forecast-icon">
+                            <div class="forecast-temp">${day.temp}°C</div>
+                        `;
+                        forecastElement.appendChild(forecastItem);
+
+                        lastDate = currentDate;
+                        daysCount++;
+                    }
+                });
+
+                document.getElementById('forecast').style.display = 'block';
+            } else {
+                const noForecastMessage = document.createElement('div');
+                noForecastMessage.textContent = 'कोई पूर्वानुमान उपलब्ध नहीं है।';
+                forecastElement.appendChild(noForecastMessage);
+                document.getElementById('forecast').style.display = 'block';
+            }
+        }
+
+        function showError(message) {
+            document.getElementById('weather').style.display = 'none';
+            document.getElementById('forecast').style.display = 'none';
+            const errorElement = document.getElementById('error');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+        
+    </script>
+</body>
+</html>

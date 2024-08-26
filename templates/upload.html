@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Disease Prediction</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='disease.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    {% include "base.html" %}
+    <div class="container">
+        <h1>Upload Image for Disease Detection</h1>
+        <div class="form-wrapper">
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <p class="crop-support">Currently supported for:</p>
+                    <ul>
+                        <li>Apple</li>
+                        <li>Blueberry</li>
+                        <li>Cherry (Including sour)</li>
+                        <li>Corn (Maize)</li>
+                        <li>Grape</li>
+                        <li>Orange</li>
+                        <li>Peach</li>
+                        <li>Pepper (bell)</li>
+                        <li>Potato</li>
+                        <li>Raspberry</li>
+                        <li>Soybean</li>
+                        <li>Squash</li>
+                        <li>Strawberry</li>
+                        <li>Tomato</li>
+                    </ul>
+                    <label for="file">Choose an image file:</label>
+                    <input type="file" id="file" name="file">
+                </div>
+                <button type="submit" class="btn">Detect</button>
+            </form>
+        </div>
+        {% if filename %}
+        <div class="card">
+            <img src="{{ url_for('static', filename='uploads/' + filename) }}" alt="Uploaded image">
+            <h5 class="card-title">Uploaded image: {{ filename }}</h5>
+            <p class="card-text">{{ prediction | safe }}</p>
+        </div>
+        {% endif %}
+    </div>
+    {% include "footer.html" %}
+</body>
+</html>

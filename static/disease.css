@@ -1,0 +1,114 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    background-image: url("farm_background_1.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* This keeps the background image fixed */
+
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: rgba(42, 52, 57, 0.5); 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    color: #f4f4f4;
+}
+
+h1 {
+    text-align: center;
+    color:  #e9f2e9;
+    margin-bottom: 20px;
+}
+
+.form-wrapper {
+    padding: 20px;
+    background-color: rgba(42, 52, 57, 0.7); 
+    border-radius: 10px;
+   
+}
+
+.form-wrapper .form-group {
+    margin-bottom: 15px;
+}
+
+.form-wrapper .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #9e9999;
+}
+
+.form-wrapper .form-group input[type="file"] {
+    display: block;
+}
+
+.form-wrapper .btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #6aee6e;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.form-wrapper .btn:hover {
+    background-color:red;
+}
+
+.crop-support {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.crop-support ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.crop-support ul li {
+    background: #e9ecef;
+    margin-bottom: 5px;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.card {
+    background-color: rgba(42, 52, 57, 0.5); 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+   
+}
+
+.card img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 10px;
+    border: 2px #f4f4f4 solid;
+}
+
+.card-title {
+    margin-top: 10px;
+    color:#f4f4f4;
+    align-self: center;
+}
+
+.card-text {
+    color: #555;
+    margin-top: 10px;
+}

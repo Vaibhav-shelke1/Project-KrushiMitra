@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>फसल सिफारिश</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='crop.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    {% include "base2.html" %}
+
+    <h1>फसल सिफारिश प्रणाली</h1>
+    <div class="container">
+        <form action="/crop-predict" method="POST" id="cropForm" onsubmit="return validateForm()">
+            <label for="nitrogen">नाइट्रोजन (N):</label>
+            <input type="text" id="nitrogen" name="nitrogen" placeholder="0 - 200">
+
+            <label for="phosphorous">फास्फोरस (P):</label>
+            <input type="text" id="phosphorous" name="phosphorous" placeholder="0 - 100">
+
+            <label for="potassium">पोटेशियम (K):</label>
+            <input type="text" id="potassium" name="potassium" placeholder="0 - 200">
+
+            <label for="ph">pH:</label>
+            <input type="text" id="ph" name="ph" placeholder="4.0 - 9.0">
+
+            <label for="rainfall">वृष्टि (मिमी):</label>
+            <input type="text" id="rainfall" name="rainfall" placeholder="0 - 5000">
+
+            <label for="city">शहर:</label>
+            <input type="text" id="city" name="city" placeholder="शहर का नाम">
+
+            <input type="submit" value="फसल की भविष्यवाणी करें">
+        </form>
+
+        {% if prediction %}
+            <div class="answer">
+                <p>दिए गए परिस्थितियों के लिए सिफारिश की गई फसल है: <strong>{{ prediction }}</strong></p>
+            </div>
+        {% endif %}
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+    </div>
+    {% include "footer2.html" %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // फ़ॉर्म और संदेशों को रीसेट करने के लिए फ़ंक्शन
+            function resetForm() {
+                document.getElementById('cropForm').reset();  // फ़ॉर्म फ़ील्ड्स रीसेट करें
+                document.getElementById('predictionMessage').style.display = 'none';  // भविष्यवाणी संदेश छुपाएँ
+                document.getElementById('errorMessage').style.display = 'none';  // त्रुटि संदेश छुपाएँ
+            }
+        
+            // पेज लोड या रिफ्रेश होने पर resetForm फ़ंक्शन कॉल करें
+            resetForm();
+        });
+
+        function validateForm() {
+            var nitrogen = document.getElementById('nitrogen').value;
+            var phosphorous = document.getElementById('phosphorous').value;
+            var potassium = document.getElementById('potassium').value;
+            var ph = document.getElementById('ph').value;
+            var rainfall = document.getElementById('rainfall').value;
+
+            // बुनियादी मान्यता उदाहरण (आप इसे आवश्यकतानुसार विस्तारित कर सकते हैं)
+            if (isNaN(nitrogen) || isNaN(phosphorous) || isNaN(potassium) || isNaN(ph) || isNaN(rainfall)) {
+                alert("कृपया नाइट्रोजन, फास्फोरस, पोटेशियम, pH और वृष्टि के लिए वैध संख्यात्मक मान दर्ज करें।");
+                return false;
+            }
+
+            // उदाहरण श्रेणी मान्यता (अपनी आवश्यकताओं के अनुसार सीमा समायोजित करें)
+            if (nitrogen < 0 || nitrogen > 200 || phosphorous < 0 || phosphorous > 100 ||
+                potassium < 0 || potassium > 200 || ph < 4.0 || ph > 9.0 || rainfall < 0 || rainfall > 5000) {
+                alert("कृपया निर्दिष्ट सीमाओं के भीतर मान दर्ज करें:\nनाइट्रोजन: 0 - 200\nफास्फोरस: 0 - 100\nपोटेशियम: 0 - 200\npH: 4.0 - 9.0\nवृष्टि: 0 - 5000");
+                return false;
+            }
+
+            return true;  // फ़ॉर्म सबमिशन की अनुमति है
+        }
+    </script>
+</body>
+</html>

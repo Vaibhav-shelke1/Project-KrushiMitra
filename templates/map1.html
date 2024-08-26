@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Map with Click Event</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        #map {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+        }
+        .weather-popup {
+            position: absolute;
+            background-color: #faf3d1;
+            padding: 10px;
+            width: 140px;
+            font-size: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+        .custom-control {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background-color: white;
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    {% include "base1.html" %}
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        const map = L.map('map').setView([{{ lat }}, {{ lng }}], 9); // Set initial view with dynamic coordinates
+
+        const baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        // Function to fetch and display different weather data layers
+        async function getWeatherLayers() {
+            const apiKey = '9943f620b459fdcfd2d1e4386fc75bd6';
+            const precipitationUrl = `https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${apiKey}`;
+            const cloudUrl = `https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${apiKey}`;
+            const temperatureUrl = `https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${apiKey}`;
+            const windUrl = `https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=${apiKey}`;
+            const pressureUrl = `https://tile.openweathermap.org/map/pressure_new/{z}/{x}/{y}.png?appid=${apiKey}`;
+            const rainfallUrl = `https://tile.openweathermap.org/map/rain_new/{z}/{x}/{y}.png?appid=${apiKey}`;
+
+            const precipitationLayer = L.tileLayer(precipitationUrl, {
+                attribution: '&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>',
+                opacity: 0.8,
+                tileSize: 256,
+            });
+
+            const cloudLayer = L.tileLayer(cloudUrl, {
+                attribution: '&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>',
+                opacity: 0.6,
+                tileSize: 256,
+            });
+
+            const temperatureLayer = L.tileLayer(temperatureUrl, {
+                attribution: '&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>',
+                opacity: 0.7,
+                tileSize: 256,
+            });
+
+            const windLayer = L.tileLayer(windUrl, {
+                attribution: '&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>',
+                opacity: 0.7,
+                tileSize: 256,
+            });
+
+            const pressureLayer = L.tileLayer(pressureUrl, {
+                attribution: '&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>',
+                opacity: 0.7,
+                tileSize: 256,
+            });
+
+            const rainfallLayer = L.tileLayer(rainfallUrl, {
+                attribution: '&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>',
+                opacity: 0.7,
+                tileSize: 256,
+            });
+
+            // Create a layers control
+            const overlayLayers = {
+                "Precipitation": precipitationLayer,
+                "Clouds": cloudLayer,
+                "Temperature": temperatureLayer,
+                "Wind Speed": windLayer,
+                "Pressure": pressureLayer,
+                "Rainfall": rainfallLayer // Add Rainfall layer to the control
+            };
+
+            L.control.layers(null, overlayLayers).addTo(map);
+        }
+
+        // Fetch and display weather layers initially
+        getWeatherLayers();
+
+        // Function to handle map click event and fetch weather data
+        function handleMapClick(e) {
+            if (e.latlng) {
+                const lat = e.latlng.lat.toFixed(2);
+                const lng = e.latlng.lng.toFixed(2);
+                fetchWeatherData(lat, lng, e.latlng);
+            } else {
+                console.error('Invalid coordinates:', e.latlng);
+            }
+        }
+
+        // Example function to fetch weather data
+        async function fetchWeatherData(lat, lng, latlng) {
+            const apiKey = '0931fd55055aa0f7904e511e33994db2';
+            const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${apiKey}&units=metric`;
+
+            try {
+                const response = await fetch(weatherUrl);
+                if (!response.ok) {
+                    throw new Error('Weather data not available');
+                }
+                const weatherData = await response.json();
+                console.log(weatherData); // Example: Log weather data to console
+                // Create a popup with weather information
+                createWeatherPopup(weatherData, latlng);
+            } catch (error) {
+                console.error('Error fetching weather data:', error);
+                alert('Failed to fetch weather data');
+            }
+        }
+
+        // Function to create a popup with weather information
+        function createWeatherPopup(weatherData, latlng) {
+            // Clear existing popups
+            map.closePopup();
+
+            // Create a popup
+            const popup = L.popup({ closeButton: false, offset: L.point(0, -30) })
+                .setLatLng(latlng)
+                .setContent(`<div class="weather-popup">
+                                <h4>Weather Information</h4>
+                                <p><strong>Description:</strong> ${weatherData.weather[0].description}</p>
+                                <p><strong>Temperature:</strong> ${weatherData.main.temp} &#8451;</p>
+                                <p><strong>Humidity:</strong> ${weatherData.main.humidity} %</p>
+                                <p><strong>Wind Speed:</strong> ${weatherData.wind.speed} m/s</p>
+                             </div>`)
+                .openOn(map);
+
+            // Set timeout to close the popup after 10 seconds
+            setTimeout(() => {
+                map.closePopup(popup);
+            }, 5000); // 10000 milliseconds = 10 seconds
+        }
+
+        // Add click event listener to the map
+        map.on('click', handleMapClick);
+    </script>
+</body>
+</html>

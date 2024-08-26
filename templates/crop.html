@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Recommendation</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='crop.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    {% include "base.html" %}
+
+    <h1>Crop Recommendation System</h1>
+    <div class="container">
+        <form action="/crop-predict" method="POST" id="cropForm" onsubmit="return validateForm()">
+            <label for="nitrogen">Nitrogen (N):</label>
+            <input type="text" id="nitrogen" name="nitrogen" placeholder="0 - 200">
+
+            <label for="phosphorous">Phosphorous (P):</label>
+            <input type="text" id="phosphorous" name="phosphorous" placeholder="0 - 100">
+
+            <label for="potassium">Potassium (K):</label>
+            <input type="text" id="potassium" name="potassium" placeholder="0 - 200">
+
+            <label for="ph">pH:</label>
+            <input type="text" id="ph" name="ph" placeholder="4.0 - 9.0">
+
+            <label for="rainfall">Rainfall (mm):</label>
+            <input type="text" id="rainfall" name="rainfall" placeholder="0 - 5000">
+
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" placeholder="City Name">
+
+            <input type="submit" value="Predict Crop">
+        </form>
+
+        {% if prediction %}
+            <div class="answer">
+                <p>The recommended crop for the given conditions is: <strong>{{ prediction }}</strong></p>
+            </div>
+        {% endif %}
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+    </div>
+    {% include "footer.html" %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to reset form and messages
+            function resetForm() {
+                document.getElementById('cropForm').reset();  // Reset form fields
+                document.getElementById('predictionMessage').style.display = 'none';  // Hide prediction message
+                document.getElementById('errorMessage').style.display = 'none';  // Hide error message
+            }
+        
+            // Call resetForm function when the page is loaded or refreshed
+            resetForm();
+        });
+
+        function validateForm() {
+            var nitrogen = document.getElementById('nitrogen').value;
+            var phosphorous = document.getElementById('phosphorous').value;
+            var potassium = document.getElementById('potassium').value;
+            var ph = document.getElementById('ph').value;
+            var rainfall = document.getElementById('rainfall').value;
+
+            // Basic validation example (you can expand this as needed)
+            if (isNaN(nitrogen) || isNaN(phosphorous) || isNaN(potassium) || isNaN(ph) || isNaN(rainfall)) {
+                alert("Please enter valid numeric values for Nitrogen, Phosphorous, Potassium, pH, and Rainfall.");
+                return false;
+            }
+
+            // Example range validation (adjust ranges as per your requirements)
+            if (nitrogen < 0 || nitrogen > 200 || phosphorous < 0 || phosphorous > 100 ||
+                potassium < 0 || potassium > 200 || ph < 4.0 || ph > 9.0 || rainfall < 0 || rainfall > 5000) {
+                alert("Please enter values within the specified ranges:\nNitrogen: 0 - 200\nPhosphorous: 0 - 100\nPotassium: 0 - 200\npH: 4.0 - 9.0\nRainfall: 0 - 5000");
+                return false;
+            }
+
+            return true;  // Form submission allowed
+        }
+    </script>
+</body>
+</html>
