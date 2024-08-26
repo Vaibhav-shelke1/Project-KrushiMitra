@@ -295,7 +295,7 @@ def map_page():
 
 # Function to get coordinates from location
 def get_coordinates(location):
-    url = f'https://api.opencagedata.com/geocode/v1/json?q={location}&key={'c2d7dfab21804c06a3b4174bcce2fde6'}'
+   url = f'https://api.opencagedata.com/geocode/v1/json?q={location}&key=c2d7dfab21804c06a3b4174bcce2fde6'
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
