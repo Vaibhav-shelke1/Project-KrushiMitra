@@ -295,8 +295,8 @@ def map_page():
 
 # Function to get coordinates from location
 def get_coordinates(location):
-   url = f'https://api.opencagedata.com/geocode/v1/json?q={location}&key=c2d7dfab21804c06a3b4174bcce2fde6'
-   response = requests.get(url)
+    url = f'https://api.opencagedata.com/geocode/v1/json?q={location}&key=c2d7dfab21804c06a3b4174bcce2fde6'
+    response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
         if data['results']:
@@ -304,6 +304,7 @@ def get_coordinates(location):
             lng = data['results'][0]['geometry']['lng']
             return lat, lng
     return None, None
+
 #----------------------------------------------------------------------------------------------------------------------------
 # Load the crop recommendation model
 with open('crop_recommedation.pkl', 'rb') as f:
