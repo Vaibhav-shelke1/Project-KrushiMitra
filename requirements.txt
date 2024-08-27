@@ -3,9 +3,7 @@ selenium
 beautifulsoup4
 requests
 webdriver-manager
-gunicorn
 google-generativeai
-numpy
 langchain
 langsmith
 langchain-community
