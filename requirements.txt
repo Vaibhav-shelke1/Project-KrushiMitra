@@ -9,5 +9,6 @@ numpy
 langchain
 langsmith
 langchain-community
+langchain_huggingface
 langchain-core
 qdrant-client
