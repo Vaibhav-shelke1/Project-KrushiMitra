@@ -7,7 +7,7 @@ gunicorn==23.0.0
 google-generativeai==0.2.0
 numpy==1.24.3
 langchain==0.0.305
-langsmith==0.0.63  # Compatible with langchain 0.0.305 and langchain-community 0.0.12
+langsmith==0.0.63  # Compatible with langchain 0.0.305
 langchain-community==0.0.12
 qdrant-client==1.10.1
-langchain-core==0.0.52  # Compatible with langsmith 0.0.63
+langchain-core==0.1.52  # Latest compatible version
