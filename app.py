@@ -507,45 +507,45 @@ def allowed_file(filename):
 
 @app.route('/predict', methods=['GET', 'POST'])
 def upload_image():
-    if request.method == 'POST':
-        if 'file' not in request.files:
-            return redirect(request.url)
+    # if request.method == 'POST':
+    #     if 'file' not in request.files:
+    #         return redirect(request.url)
         
-        file = request.files['file']
+    #     file = request.files['file']
         
-        if file.filename == '':
-            return redirect(request.url)
+    #     if file.filename == '':
+    #         return redirect(request.url)
         
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(file_path)
+    #     if file and allowed_file(file.filename):
+    #         filename = secure_filename(file.filename)
+    #         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    #         file.save(file_path)
             
-            # Predict the disease using your prediction function
-            predicted_disease = predict(file_path)
-            out = disease_names[predicted_disease]
-            output = f"The Detected image is of {disease_names[predicted_disease]}"
-            pr = f"""
-        You are KrushiMitra an expert assistant specializing in agriculture and farming.
-        If the plant disease is identified as {out}, provide a detailed and helpful response about effective practices and methods to manage or treat this disease. Suggest suitable fertilizers if any and any relevant preventive measures and treatment options.
-        If {out} indicates 'plant is healthy', provide general advice on maintaining plant health and preventing diseases. Your responses should be helpful, clear, and relevant.
-        """
+    #         # Predict the disease using your prediction function
+    #         predicted_disease = predict(file_path)
+    #         out = disease_names[predicted_disease]
+    #         output = f"The Detected image is of {disease_names[predicted_disease]}"
+    #         pr = f"""
+    #     You are KrushiMitra an expert assistant specializing in agriculture and farming.
+    #     If the plant disease is identified as {out}, provide a detailed and helpful response about effective practices and methods to manage or treat this disease. Suggest suitable fertilizers if any and any relevant preventive measures and treatment options.
+    #     If {out} indicates 'plant is healthy', provide general advice on maintaining plant health and preventing diseases. Your responses should be helpful, clear, and relevant.
+    #     """
             
-            llm = ChatGoogleGenerativeAI(
-                model="gemini-1.5-flash",
-                temperature=0.0,
-                max_tokens=None,
-                timeout=None,
-                google_api_key='AIzaSyCQbNkygleMD3b6QI1QFq8-Zr9gpMBAfP4'
-            )
-            language = session.get('language', 'en')
-            translator = Translator()
-            llm_out = llm.invoke(pr)
-            formatted_output = markdown.markdown(llm_out.content)
-            formatted_output= translator.translate(formatted_output, dest=language).text
-            return render_template(f'upload{get_language_suffix()}.html', filename=filename, prediction=formatted_output)
-        else:
-            return redirect(request.url)
+    #         llm = ChatGoogleGenerativeAI(
+    #             model="gemini-1.5-flash",
+    #             temperature=0.0,
+    #             max_tokens=None,
+    #             timeout=None,
+    #             google_api_key='AIzaSyCQbNkygleMD3b6QI1QFq8-Zr9gpMBAfP4'
+    #         )
+    #         language = session.get('language', 'en')
+    #         translator = Translator()
+    #         llm_out = llm.invoke(pr)
+    #         formatted_output = markdown.markdown(llm_out.content)
+    #         formatted_output= translator.translate(formatted_output, dest=language).text
+    #         return render_template(f'upload{get_language_suffix()}.html', filename=filename, prediction=formatted_output)
+    #     else:
+    #         return redirect(request.url)
     return render_template(f'upload{get_language_suffix()}.html')
           
     
