@@ -9,11 +9,11 @@ from chain import conversational_rag_chain
 from langchain_google_genai import ChatGoogleGenerativeAI
 from googletrans import Translator
 from werkzeug.utils import secure_filename
-import torch
-from torch import nn
-from torchvision import transforms
-from PIL import Image
-from model1 import CNN_NeuralNet
+# import torch
+# from torch import nn
+# from torchvision import transforms
+# from PIL import Image
+# from model1 import CNN_NeuralNet
 import markdown
 
 app = Flask(__name__, static_url_path='/static')
