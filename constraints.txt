@@ -3,5 +3,4 @@ Pillow==0  # Not needed unless you use code related to image processing
 SQLAlchemy==0  # Unused in your app.py
 numpy==0  # Not directly required based on the provided app.py
 transformers==0  # Not directly required
-protobuf==0  # Commonly pulled in by Google or ML-related packages, not directly required
 scipy==0  # Not directly required
