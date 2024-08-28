@@ -1,0 +1,5 @@
+torch==0  # Not needed unless you use commented-out torch code
+Pillow==0  # Not needed unless you use commented-out torch code
+SQLAlchemy==0  # Unused in your app.py
+numpy==0  # Often pulled in by machine learning libraries but not explicitly used
+transformers==0  # Unused directly in your app.py
