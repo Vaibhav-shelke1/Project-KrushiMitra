@@ -1,5 +1,7 @@
-torch==0  # Not needed unless you use commented-out torch code
-Pillow==0  # Not needed unless you use commented-out torch code
+torch==0  # Not needed as it is commented out in your app.py
+Pillow==0  # Not needed unless you use code related to image processing
 SQLAlchemy==0  # Unused in your app.py
-numpy==0  # Often pulled in by machine learning libraries but not explicitly used
-transformers==0  # Unused directly in your app.py
+numpy==0  # Not directly required based on the provided app.py
+transformers==0  # Not directly required
+protobuf==0  # Commonly pulled in by Google or ML-related packages, not directly required
+scipy==0  # Not directly required
