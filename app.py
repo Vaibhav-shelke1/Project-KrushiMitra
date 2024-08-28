@@ -3,7 +3,6 @@ import requests
 import os
 import google.generativeai as genai
 import pickle
-import numpy as np
 from scrape import script
 from chain import conversational_rag_chain
 from langchain_google_genai import ChatGoogleGenerativeAI
