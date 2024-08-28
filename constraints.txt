@@ -1,5 +1,4 @@
 torch==0  # Not needed as it is commented out in your app.py
 Pillow==0  # Not needed unless you use code related to image processing
-numpy==0  # Not directly required based on the provided app.py
 transformers==0  # Not directly required
 scipy==0  # Not directly required
