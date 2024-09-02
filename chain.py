@@ -1,4 +1,4 @@
-from langchain_huggingface import HuggingFaceEmbeddings
+# from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_qdrant import Qdrant
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.chains.combine_documents import create_stuff_documents_chain
@@ -12,15 +12,22 @@ import google.generativeai as genai
 import getpass
 import os
 from langchain_google_genai import ChatGoogleGenerativeAI
-
+from mixedbread_ai.client import MixedbreadAI
 import os
 
 google_api_key = os.getenv('GOOGLE_API_KEY')
 
 
-embeddings = HuggingFaceEmbeddings(
-        model_name="mixedbread-ai/mxbai-embed-large-v1",
-        model_kwargs={'device': 'cpu'})
+
+mxbai = MixedbreadAI(api_key="emb_3835f9d13d307758dcb8ae0738ea3bce4bedc1601d3543a9")
+
+embeddings = mxbai.embeddings(
+  model='mixedbread-ai/mxbai-embed-large-v1')
+
+
+# embeddings = HuggingFaceEmbeddings(
+#         model_name="mixedbread-ai/mxbai-embed-large-v1",
+#         model_kwargs={'device': 'cpu'})
 
 # llm = ChatOllama(model = 'llama3:8b')
 
