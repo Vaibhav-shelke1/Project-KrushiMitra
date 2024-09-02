@@ -8,8 +8,8 @@ langchain
 langsmith
 langchain-community
 langchain_qdrant
-langchain_huggingface
 langchain-core
 qdrant-client
 langchain_google_genai
 gunicorn
+mixedbread_ai
